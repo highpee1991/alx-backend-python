@@ -19,6 +19,8 @@ def stream_users_in_batches(batch_size):
             if not batch:
                 break
             yield batch
+        return 
+
     except Error as e:
         print(f'Error: {e}')
     finally:
