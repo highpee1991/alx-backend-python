@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
-def stream_data():
+def stream_users():
     try:
         connection = mysql.connector.connect(
            host='localhost',
@@ -23,13 +23,6 @@ def stream_data():
 
     
     finally:
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
+        pass
 
-                    
-
-if __name__ == "__main__":
-    for record in stream_data():
-        print(record)
+   
