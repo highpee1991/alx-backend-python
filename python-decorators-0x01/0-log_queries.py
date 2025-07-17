@@ -1,5 +1,6 @@
 import sqlite3
 import functools
+from datetime import datetime
 
 def log_queries(func):
     @functools.wraps(func)
@@ -10,16 +11,16 @@ def log_queries(func):
         if query is None:
             raise ValueError('No SQL Value Was Provided to The Function')
 
-        print(f'Ececuting SQL Query: {query}')
+        print(f'[{datetime.now()}] Executing SQL Query: {query}')
         result = func(*args, **kwargs)
-        print(result)
+        print(f"[{datetime.now()}] Result: {result}")
         return result
     return wrapper
 
 
 @log_queries
 def fetch_all_users(query):
-    conn = sqlite3.connect('users-db')
+    conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     cursor.execute(query)
     result = cursor.fetchall()
@@ -27,4 +28,4 @@ def fetch_all_users(query):
     return result
     
 
-users = fetch_all_users(query='SELECT * FROM Users')
+users = fetch_all_users(query='SELECT * FROM users')
