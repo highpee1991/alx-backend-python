@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 
-conn = sqlite3.connect('users-db')
+conn = sqlite3.connect('users.db')
 
 cursor = conn.cursor()
 
@@ -22,8 +22,6 @@ now = datetime.now().isoformat()
 
 users = [
       ('Alice', 24, 'alice@example.com', now, now),
-      ('Alice', 35, 'seyi@example.com', now, now),
-      ('Alice', 42, 'ade@example.com', now, now),
     ('Bob', 17, 'bob@example.com', now, now),
     ('Charlie', 19, 'charlie@example.com', now, now),
     ('David', 16, 'david@example.com', now, now),
