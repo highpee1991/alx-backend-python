@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import User, Message, Conversation
-from rest_framework.exceptions import ValidationError
 
 class UserSerializer(serializers.ModelSerializer):
     phone_number = serializers.CharField(required=False)
@@ -10,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         def validate_email(self, value):
             if not value.endswith('@example.com'):
-                raise ValidationError("Only @example.com emails are allowed.")
+                raise serializers.ValidationError("Only @example.com emails are allowed.")
             return value
     
 
