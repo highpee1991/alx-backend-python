@@ -17,10 +17,29 @@ class ConversationViewSet(viewsets.ModelViewSet):
         return Conversation.objects.filter(participants=self.request.user)
 
     def create(self, request, *args, **kwargs):
+        conversation_id = request.data.get("conversation")
+        
+        try:
+            conversation = Conversation.objects.get(id=conversation_id)
+        except Conversation.DoesNotExist:
+            return Response(
+                {"detail": "Conversation not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        if request.user not in conversation.participants.all():
+            return Response(
+                {"detail": "You are not a participant in this conversation."},
+                status=status.HTTP_403_FORBIDDEN  
+            )
+        
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            conversation = serializer.save()
-            return Response(ConversationSerializer(conversation).data, status=status.HTTP_201_CREATED)
+            message = serializer.save(sender=request.user)
+            return Response(
+                MessageSerializer(message).data,
+                status=status.HTTP_201_CREATED
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MessageViewSet(viewsets.ModelViewSet):
