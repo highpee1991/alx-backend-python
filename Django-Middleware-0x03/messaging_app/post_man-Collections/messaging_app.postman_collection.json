@@ -1,0 +1,19 @@
+{
+	"info": {
+		"_postman_id": "30105511-3341-4bce-b8f3-845fb8e310f0",
+		"name": "messaging_app",
+		"description": "StartFragmentTesting JWT login for messaging appEndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17975664"
+	},
+	"item": [
+		{
+			"name": "Login (JWT)",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
