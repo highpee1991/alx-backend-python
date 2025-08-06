@@ -1,5 +1,6 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
+from django.contrib.auth.models import User
 from .models import Notification, Message, MessageHistory
 
 @receiver(post_save, sender=Message)
@@ -25,3 +26,17 @@ def log_message_edites(sender, instance, **kwargs):
                 message = instance,
                 old_content = old_instance.content
             )
+        
+
+    
+@receiver(post_delete, sender=User)
+def delete_user_related_data(sender, instance, **kwargs):
+    #delete all message by user
+    Message.objects.filter(user=instance).delete()
+
+    #delete all notitifcation
+    Notification.objects.filter(user=instance).delete()
+
+    # Delete MessageHistories for messages owned by the user
+    # (We assume cascade deletes won't automatically remove them if not properly linked)
+    MessageHistory.objects.filter(Message_user=instance).delete()
