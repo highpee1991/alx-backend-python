@@ -1,0 +1,10 @@
+{% for message in messages %}
+<div
+  style="margin-left: {{ level }}px; border-left: 1px solid #ccc; padding-left: 10px; margin-bottom: 10px;"
+>
+  <strong>{{ message.sender.username }}</strong>: {{ message.content }} <br />
+  <small>{{ message.timestamp }}</small>
+</div>
+
+{% if message.replies.all %} {% include "threaded_messages.html" with
+messages=message.replies.all level=level|add:"20" %} {% endif %} {% endfor %}

@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from messaging.views import delete_user
+from messaging.views import delete_user, conversation_page
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -24,4 +24,6 @@ urlpatterns = [
     path('delete_user/', delete_user, name='delete_user'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('threaded/', conversation_page, name='threaded_conversations'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

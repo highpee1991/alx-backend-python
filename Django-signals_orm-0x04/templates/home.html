@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Welcome Home</title>
-</head>
-<body>
-    <h1>Welcome, {{ request.user.username }}!</h1>
+  </head>
+  <body>
+    <h2>Welcome, {{ request.user.username }}!</h2>
     <p>You have successfully logged in.</p>
-</body>
+    <a href="{% url 'delete_user' %}">Delete my account</a> |
+    <a href="{% url 'threaded_conversations' %}">View Conversations</a>
+  </body>
 </html>
