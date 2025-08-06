@@ -1,25 +1,22 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import Message
 from django.http import JsonResponse
 from django.db.models import Q
 
-
-# Create your views here.
+# Delete user view
 @login_required
 def delete_user(request):
     user = request.user
     user.delete()
-    return redirect('home') #wherever you want to redirect after deleting
-    
+    return redirect('home')
 
-
+# Home view
 @login_required
 def home(request):
     return render(request, 'home.html')
 
-messages = Message.objects.filter(parent_message__isnull=True).select_related('sender').prefetch_related('replies__sender')
 
 def get_threaded_messages(message):
     """
@@ -39,10 +36,11 @@ def get_threaded_messages(message):
     return threaded
 
 
+@login_required
 def conversation_view(request):
     user = request.user
     top_level_messages = Message.objects.filter(
-        sender=user,
+        Q(sender=user) | Q(receiver=user),
         parent_message__isnull=True
     ).select_related('sender').prefetch_related('replies__sender')
 
@@ -60,4 +58,3 @@ def conversation_page(request):
     ).select_related('sender').prefetch_related('replies__sender')
 
     return render(request, 'threaded_messages.html', {'messages': messages, 'level': 0})
-
