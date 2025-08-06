@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from .models import Message
 from django.http import JsonResponse
+from django.db.models import Q
 
 
 # Create your views here.
@@ -39,13 +40,24 @@ def get_threaded_messages(message):
 
 
 def conversation_view(request):
-    top_level_messages = Message.objects.filter(parent_message__isnull=True).select_related('sender').prefetch_related('replies__sender')
+    user = request.user
+    top_level_messages = Message.objects.filter(
+        sender=user,
+        parent_message__isnull=True
+    ).select_related('sender').prefetch_related('replies__sender')
 
     threaded_conversations = [get_threaded_messages(msg) for msg in top_level_messages]
 
     return JsonResponse({'conversations': threaded_conversations})
 
 
+@login_required
 def conversation_page(request):
-    messages = Message.objects.filter(parent_message__isnull=True).select_related('sender').prefetch_related('replies__sender')
+    user = request.user
+    messages = Message.objects.filter(
+        Q(sender=user) | Q(receiver=user),
+        parent_message__isnull=True
+    ).select_related('sender').prefetch_related('replies__sender')
+
     return render(request, 'threaded_messages.html', {'messages': messages, 'level': 0})
+
