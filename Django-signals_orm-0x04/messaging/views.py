@@ -58,3 +58,14 @@ def conversation_page(request):
     ).select_related('sender').prefetch_related('replies__sender')
 
     return render(request, 'threaded_messages.html', {'messages': messages, 'level': 0})
+
+
+def message_thread_view(request):
+    messages = Message.objects.filter(
+        Q(sender=request.user) | Q(receiver=request.user),
+        parent_message__isnull=True
+    ).select_related('sender', 'receiver') \
+     .prefetch_related('replies__sender', 'replies__receiver')
+
+    # You can render this to template or return as JSON for API
+    return render(request, 'messaging/thread.html', {'messages': messages})
