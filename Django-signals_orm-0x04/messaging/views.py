@@ -69,3 +69,10 @@ def message_thread_view(request):
 
     # You can render this to template or return as JSON for API
     return render(request, 'messaging/thread.html', {'messages': messages})
+
+
+
+@login_required
+def unread_messages_view(request):
+    unread = Message.unread.for_user(request.user)
+    return render(request, 'unread.html', {'unread_messages': unread})

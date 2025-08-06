@@ -1,0 +1,8 @@
+<h2>Unread Messages</h2>
+<ul>
+  {% for message in unread_messages %}
+    <li><strong>{{ message.sender.username }}</strong>: {{ message.content }}</li>
+  {% empty %}
+    <li>No unread messages.</li>
+  {% endfor %}
+</ul>
