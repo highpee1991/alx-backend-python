@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from .models import Message
 from django.http import JsonResponse
 from django.db.models import Q
+from django.views.decorators.cache import cache_page
+
 
 # Delete user view
 @login_required
@@ -35,6 +37,11 @@ def get_threaded_messages(message):
     
     return threaded
 
+@cache_page(60)  # Cache for 60 seconds
+@login_required
+def inbox_view(request):
+    messages = Message.objects.filter(receiver=request.user)
+    return render(request, 'inbox.html', {'messages': messages})
 
 @login_required
 def conversation_view(request):
