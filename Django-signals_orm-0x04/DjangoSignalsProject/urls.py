@@ -19,6 +19,7 @@ from django.urls import path, include
 from messaging.views import delete_user, conversation_page
 from django.views.generic import TemplateView
 from messaging.views import unread_messages_view
+from chats.views import inbox_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +29,5 @@ urlpatterns = [
     path('threaded/', conversation_page, name='threaded_conversations'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('inbox/unread/', unread_messages_view, name='unread_messages'),
+    path('inbox/', inbox_view, name='inbox'),
 ]
