@@ -18,4 +18,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Start Django with gunicorn
-CMD ["gunicorn", "messaging_app.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "messaging_app.wsgi:application"]
