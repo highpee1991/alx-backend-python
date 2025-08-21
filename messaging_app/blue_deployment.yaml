@@ -16,6 +16,6 @@ metadata:
                         spec:
                                 containers:
                                         - name: messaging-app
-                                          image: your-django-image:1.0   # <-- existing image version
+                                          image: your-django-image:2.0   # <-- existing image version
                                           ports:
                                                   - containerPort: 8000
